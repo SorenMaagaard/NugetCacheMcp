@@ -17,9 +17,11 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       semver: ${{ steps.gitversion.outputs.semVer }}
-      nugetver: ${{ steps.gitversion.outputs.nuGetVersionV2 }}
+      fullsemver: ${{ steps.gitversion.outputs.fullSemVer }}
       majorminorpatch: ${{ steps.gitversion.outputs.majorMinorPatch }}
       assemblysemver: ${{ steps.gitversion.outputs.assemblySemVer }}
+      assemblysemfilever: ${{ steps.gitversion.outputs.assemblySemFileVer }}
+      informationalversion: ${{ steps.gitversion.outputs.informationalVersion }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,8 +40,10 @@ jobs:
       - name: Display Version
         run: |
           echo "SemVer: ${{ steps.gitversion.outputs.semVer }}"
-          echo "NuGetVersionV2: ${{ steps.gitversion.outputs.nuGetVersionV2 }}"
+          echo "FullSemVer: ${{ steps.gitversion.outputs.fullSemVer }}"
           echo "AssemblySemVer: ${{ steps.gitversion.outputs.assemblySemVer }}"
+          echo "AssemblySemFileVer: ${{ steps.gitversion.outputs.assemblySemFileVer }}"
+          echo "InformationalVersion: ${{ steps.gitversion.outputs.informationalVersion }}"
 
   build-and-test:
     name: Build and Test
@@ -64,8 +68,8 @@ jobs:
             --no-restore \
             -p:Version=${{ needs.version.outputs.semver }} \
             -p:AssemblyVersion=${{ needs.version.outputs.assemblysemver }} \
-            -p:FileVersion=${{ needs.version.outputs.assemblysemver }} \
-            -p:InformationalVersion=${{ needs.version.outputs.semver }}
+            -p:FileVersion=${{ needs.version.outputs.assemblysemfilever }} \
+            -p:InformationalVersion="${{ needs.version.outputs.informationalversion }}"
 
       - name: Test
         run: dotnet test --project NugetCacheMcpServer.Tests --configuration Release --no-build
@@ -98,8 +102,8 @@ jobs:
             --output ./publish/${{ matrix.runtime }} \
             -p:Version=${{ needs.version.outputs.semver }} \
             -p:AssemblyVersion=${{ needs.version.outputs.assemblysemver }} \
-            -p:FileVersion=${{ needs.version.outputs.assemblysemver }} \
-            -p:InformationalVersion=${{ needs.version.outputs.semver }}
+            -p:FileVersion=${{ needs.version.outputs.assemblysemfilever }} \
+            -p:InformationalVersion="${{ needs.version.outputs.informationalversion }}"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
