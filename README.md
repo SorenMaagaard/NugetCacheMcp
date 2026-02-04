@@ -15,14 +15,14 @@ A Model Context Protocol (MCP) server that provides AI assistants with tools to 
 ### Using Docker
 
 ```bash
-docker pull ghcr.io/YOUR_USERNAME/testnugetmcp:latest
+docker pull ghcr.io/sorenmaagaard/nugetcachemcp:latest
 ```
 
 ### Download Binary
 
 Download the latest release from the [Releases](../../releases) page:
-- `nuget-cache-mcp-server-win-x64.zip` - Windows x64
-- `nuget-cache-mcp-server-linux-x64.tar.gz` - Linux x64
+- `NuGetCacheMcp.exe` - Windows x64
+- `NuGetCacheMcp` - Linux x64
 
 ### Build from Source
 
@@ -30,15 +30,15 @@ Requires .NET 10 SDK.
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/TestNugetMcp.git
-cd TestNugetMcp
+git clone https://github.com/SorenMaagaard/NugetCacheMcp.git
+cd NugetCacheMcp
 
 # Build
-dotnet build NugetCacheMcpServer.slnx
+dotnet build NuGetCacheMcp.slnx
 
-# Publish self-contained executable
-dotnet publish NugetCacheMcpServer -c Release -r win-x64 -o ./publish/win-x64
-dotnet publish NugetCacheMcpServer -c Release -r linux-x64 -o ./publish/linux-x64
+# Publish executable
+dotnet publish NugetCacheMcp/NuGetCacheMcp.csproj -c Release -r win-x64 -o ./publish/win-x64
+dotnet publish NugetCacheMcp/NuGetCacheMcp.csproj -c Release -r linux-x64 -o ./publish/linux-x64
 ```
 
 ## Configuration
@@ -51,7 +51,7 @@ Add to your Claude Desktop configuration (`claude_desktop_config.json`):
 {
   "mcpServers": {
     "nuget-cache": {
-      "command": "path/to/NugetCacheMcpServer.exe",
+      "command": "path/to/NuGetCacheMcp.exe",
       "env": {
         "NUGET_CACHE_PATH": "C:/Users/YourName/.nuget/packages"
       }
@@ -70,7 +70,7 @@ Add to your Claude Desktop configuration (`claude_desktop_config.json`):
       "args": [
         "run", "-i", "--rm",
         "-v", "/path/to/.nuget/packages:/nuget-cache:ro",
-        "ghcr.io/YOUR_USERNAME/testnugetmcp:latest"
+        "ghcr.io/sorenmaagaard/nugetcachemcp:latest"
       ]
     }
   }
@@ -145,13 +145,13 @@ Compare API changes between two versions of a package.
 ### Running Tests
 
 ```bash
-dotnet test --project NugetCacheMcpServer.Tests
+dotnet test --project NugetCacheMcp.Tests/NuGetCacheMcp.Tests.csproj
 ```
 
 ### Building Docker Image
 
 ```bash
-docker build -t nuget-cache-mcp-server .
+docker build -t nugetcachemcp .
 ```
 
 ## Credits

@@ -160,9 +160,9 @@ public class TypeExplorerToolTests
         var fixture = await TestFixture.GetInstanceAsync();
         var result = fixture.TypeExplorer.GetTypeDefinition("testlibrary", "ClassToRemove", "1.0.0");
 
-        // Method-level XML docs should be included (method DoSomething has a summary)
+        // Type-level XML docs should be included
         await Assert.That(result).Contains("summary");
-        await Assert.That(result).Contains("A method that will disappear");
+        await Assert.That(result).Contains("This class will be completely removed in V2");
     }
 
     [Test]
