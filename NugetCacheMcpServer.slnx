@@ -1,5 +1,0 @@
-<Solution>
-  <Project Path="NugetCacheMcpServer/NugetCacheMcpServer.csproj" />
-  <Project Path="NugetCacheMcpServer.Tests/NugetCacheMcpServer.Tests.csproj" />
-  <Project Path="NugetCacheMcpServer.Cli/NugetCacheMcpServer.Cli.csproj" />
-</Solution>
